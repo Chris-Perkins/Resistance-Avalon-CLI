@@ -21,14 +21,19 @@ dict_desc_by_role = {"Mordred": "You are a bad guy who Merlin does not see",
                      "Percival": "You know who Merlin is (Morgana also appears as Merlin)",
                      "Good Guy": "You are a good guy. Try to make quests pass."}
 
+# determine how we clear the screen
+clear_screen_command = "cls" if input("Are you on Windows or Mac?\n" +
+                                      "Enter W for Windows or anything else for Mac\n> ").strip().lower() == "w" else "clear"
+
 # Amount of people required to go on a quest by [playerCount - 5][cur_round]
 party_size_for_player_count_and_round = [[2, 3, 2, 3, 3], [2, 3, 4, 3, 4], [2, 3, 3, 4, 4], [3, 4, 4, 5, 5] * 3]
 # Number of resistance fighters denoted by [playerCount - 5]
 num_resistance = [3, 4, 4, 5, 6, 6]
 
 def main():
+    os.system(clear_screen_command)
     list_players = get_list_players()
-    os.system("cls")
+    os.system(clear_screen_command)
     
     start = True
     while start:
@@ -48,33 +53,38 @@ def main():
             input("Commence the party voting stage. Press enter when complete.\n" + 
                   "Your party requires %d participants.\n" % required_participants)
             
-            participants = [x.lower() for x in input("Please enter the names of the participants (separated by a space on this mission)\n" + 
+            participants = [x.lower() for x in input("Please enter the names of the participants for this mission separated by a space\n" + 
                                                      "Example: chris logan alex | Please remember to include yourself in the party.\n\n> ").split()]
             while (len(participants) != required_participants):
                 participants = [x.lower() for x in input("You need %d players on this quest, but you entered %d.\n" % (required_participants, len(participants)) + 
                                                          "Please enter the correct number of participants.\n> ").split()]
                 
                 
-            os.system("cls")
+            os.system(clear_screen_command)
             result = do_round(participants, cur_round)
             cur_success += result
             list_rounds_results.append("PASS" if result else "FAIL")
-            os.system("cls")
+            os.system(clear_screen_command)
             
             cur_round += 1
         
         if cur_round - cur_success >= 3:
-            print("BAD GUYS WIN HAHA")
+            print("BAD GUYS WIN HAHA\n")
         else:
+            found_assassin = False
             for player in list_players:
                 if dict_player_roles[player] == "Assassin":
+                        found_assassin = True
                         input("Good guys have completed 3 quests successfully.\n" + 
-                              "Bad guys should now reveal themselves and decide who they think Merlin is.")
+                              "Bad guys should now reveal themselves and decide who they think Merlin is.\n")
                         break
-                else:
-                    print("Bad guys lose")
-        
-        input("GAME OVER")
+            if not found_assassin:
+                input("Bad guys lose! No assassin.\n")
+
+        input("Player roles will be displayed on next enter press. Do not press if game is not over.")
+        for player in dict_player_roles.keys():
+            print("%s: %s" % (player, dict_player_roles[player]))
+        input("\nGAME OVER\n")
         start = input("Start a new game? y/n\n> ").lower() in {"y", "ye", "yes", "yea", "yeah", "yep"}
     input()("Thanks for running my program. :) Goodbye.")
 
@@ -87,7 +97,7 @@ def chose_possible_roles(player_count):
     cur_roles = list()
     
     # choose good characters
-    os.system("cls")
+    os.system(clear_screen_command)
     print("Select your Resistance\n")
     available_chars = list(good_chars)
     available_chars.sort()
@@ -99,7 +109,7 @@ def chose_possible_roles(player_count):
         cur_roles.append(char)
     
     # choose spy characters
-    os.system("cls")
+    os.system(clear_screen_command)
     print("Select your Spies\n")
     available_chars = list(bad_chars)
     available_chars.sort()
@@ -140,10 +150,10 @@ def assign_player_roles(list_players, list_possible_roles):
 
 # shows players their roles
 def show_player_roles(list_players, dict_player_roles):
-    os.system("cls")
+    os.system(clear_screen_command)
     for player in list_players:
         input("Please hand the game to %s. If you are this player, press enter" % player)
-        os.system("cls")
+        os.system(clear_screen_command)
         print("%s:" % player)
         print("Your role: " + dict_player_roles[player])
         print("Your role description: %s\n" % dict_desc_by_role[dict_player_roles[player]])
@@ -153,14 +163,14 @@ def show_player_roles(list_players, dict_player_roles):
             list_merlins_or_morganas = [player for player in list_players if dict_player_roles[player] in {"Morgana", "Merlin"}]
             print("Possible Merlins:\n" + "\n".join(list_merlins_or_morganas))
         elif dict_player_roles[player] == "Merlin":
-            list_bad_guys_except_mordred = [player for player in list_players if dict_player_roles[player] in {"Morgana", "Minion of Mordred", "Assassin", "Oberon"}]
+            list_bad_guys_except_mordred = [player for player in list_players if (dict_player_roles[player] in bad_chars and dict_player_roles[player] != "Mordred")]
             print("Bad guys excluding Mordred (if he exists):\n" + "\n".join(list_bad_guys_except_mordred))
         elif dict_player_roles[player] in bad_chars:
-            list_bad_guys_except_oberon = [player for player in list_players if dict_player_roles[player] in {"Morgana", "Minion of Mordred", "Assassin", "Mordred"}]
+            list_bad_guys_except_oberon = [player for player in list_players if (dict_player_roles[player] in bad_chars and dict_player_roles[player] != "Oberon")]
             print("Bad guys excluding Oberon (if he exists):\n" + "\n".join(list_bad_guys_except_oberon))
         
         input("When you are ready, press enter to clear the screen.")
-        os.system("cls")
+        os.system(clear_screen_command)
             
 
 # start the round with the number of people on the quest
@@ -173,7 +183,7 @@ def do_round(participants, cur_round):
     cur_fails = 0
     for participant in participants:
         input("Please pass the game to %s. If you are this player, press enter." % participant)
-        os.system("cls")
+        os.system(clear_screen_command)
         
         choice = input("Hello %s\n" % participant + 
                        "Please type 'p' and press enter to pass the mission,\n" + 
@@ -184,7 +194,7 @@ def do_round(participants, cur_round):
             cur_fails += 1
         
         # cls the command line so others can't see
-        os.system("cls")
+        os.system(clear_screen_command)
     # returns success if the number of fails submitted is less than the required fails
     input("The result of the past round was... (press enter to continue)")
     input(("PASS" if cur_fails < required_fails else "FAIL") + " with %d fails played" % cur_fails)
