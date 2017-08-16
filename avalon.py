@@ -28,6 +28,7 @@ num_resistance = [3, 4, 4, 5, 6, 6]
 
 def main():
     list_players = get_list_players()
+    os.system("cls")
     
     start = True
     while start:
@@ -45,7 +46,7 @@ def main():
             
             required_participants = party_size_for_player_count_and_round[len(list_players) - 5][cur_round]
             input("Commence the party voting stage. Press enter when complete.\n" + 
-                  "Your party requires %d participants." % required_participants)
+                  "Your party requires %d participants.\n" % required_participants)
             
             participants = [x.lower() for x in input("Please enter the names of the participants (separated by a space on this mission)\n" + 
                                                      "Example: chris logan alex | Please remember to include yourself in the party.\n\n> ").split()]
@@ -74,7 +75,7 @@ def main():
                     print("Bad guys lose")
         
         input("GAME OVER")
-        start = input("Start a new game? y/n").lower() in {"y", "ye", "yes", "yea", "yeah", "yep"}
+        start = input("Start a new game? y/n\n> ").lower() in {"y", "ye", "yes", "yea", "yeah", "yep"}
     input()("Thanks for running my program. :) Goodbye.")
 
 # get the names of every player
@@ -86,6 +87,7 @@ def chose_possible_roles(player_count):
     cur_roles = list()
     
     # choose good characters
+    os.system("cls")
     print("Select your Resistance\n")
     available_chars = list(good_chars)
     available_chars.sort()
@@ -97,6 +99,7 @@ def chose_possible_roles(player_count):
         cur_roles.append(char)
     
     # choose spy characters
+    os.system("cls")
     print("Select your Spies\n")
     available_chars = list(bad_chars)
     available_chars.sort()
