@@ -28,49 +28,54 @@ num_resistance = [3, 4, 4, 5, 6, 6]
 
 def main():
     list_players = get_list_players()
-    list_possible_roles = chose_possible_roles(len(list_players))
-    dict_player_roles = assign_player_roles(list_players, list_possible_roles)
-    show_player_roles(list_players, dict_player_roles)
     
-    cur_round = 0
-    cur_success = 0
-    list_rounds_results = list()
-    
-    # while we did not complete the game and the number of fails < 3 (game ending state)
-    while cur_round != 5 and cur_round - cur_success < 3 and cur_success < 3:
-        print("Current round map:" + " ".join(list_rounds_results))
+    start = True
+    while start:
+        list_possible_roles = chose_possible_roles(len(list_players))
+        dict_player_roles = assign_player_roles(list_players, list_possible_roles)
+        show_player_roles(list_players, dict_player_roles)
         
-        required_participants = party_size_for_player_count_and_round[len(list_players) - 5][cur_round]
-        input("Commence the party voting stage. Press enter when complete.\n" + 
-              "Your party requires %d participants." % required_participants)
+        cur_round = 0
+        cur_success = 0
+        list_rounds_results = list()
         
-        participants = [x.lower() for x in input("Please enter the names of the participants (separated by a space on this mission)\n" + 
-                                                 "Example: chris logan alex | Please remember to include yourself in the party.\n\n> ").split()]
-        while (len(participants) != required_participants):
-            participants = [x.lower() for x in input("You need at least %d players on this quest, but you entered %d.\n" % (required_participants, len(participants)) + 
-                                                     "Please enter the correct number of participants.\n> ").split()]
+        # while we did not complete the game and the number of fails < 3 (game ending state)
+        while cur_round != 5 and cur_round - cur_success < 3 and cur_success < 3:
+            print("Current round map:" + " ".join(list_rounds_results))
             
+            required_participants = party_size_for_player_count_and_round[len(list_players) - 5][cur_round]
+            input("Commence the party voting stage. Press enter when complete.\n" + 
+                  "Your party requires %d participants." % required_participants)
             
-        os.system("cls")
-        result = do_round(participants, cur_round)
-        cur_success += result
-        list_rounds_results.append("PASS" if result else "FAIL")
-        os.system("cls")
+            participants = [x.lower() for x in input("Please enter the names of the participants (separated by a space on this mission)\n" + 
+                                                     "Example: chris logan alex | Please remember to include yourself in the party.\n\n> ").split()]
+            while (len(participants) != required_participants):
+                participants = [x.lower() for x in input("You need %d players on this quest, but you entered %d.\n" % (required_participants, len(participants)) + 
+                                                         "Please enter the correct number of participants.\n> ").split()]
+                
+                
+            os.system("cls")
+            result = do_round(participants, cur_round)
+            cur_success += result
+            list_rounds_results.append("PASS" if result else "FAIL")
+            os.system("cls")
+            
+            cur_round += 1
         
-        cur_round += 1
-    
-    if cur_round - cur_success >= 3:
-        print("BAD GUYS WIN HAHA")
-    else:
-        for player in list_players:
-            if dict_player_roles[player] == "Assassin":
-                    print("Good guys have completed 3 quests successfully.\n" + 
-                          "Bad guys should now reveal themselves and decide who they think Merlin is.")
-                    break
-            else:
-                print("Bad guys lose")
-    
-    input("GAME OVER")
+        if cur_round - cur_success >= 3:
+            print("BAD GUYS WIN HAHA")
+        else:
+            for player in list_players:
+                if dict_player_roles[player] == "Assassin":
+                        input("Good guys have completed 3 quests successfully.\n" + 
+                              "Bad guys should now reveal themselves and decide who they think Merlin is.")
+                        break
+                else:
+                    print("Bad guys lose")
+        
+        input("GAME OVER")
+        start = input("Start a new game? y/n").lower() in {"y", "ye", "yes", "yea", "yeah", "yep"}
+    input()("Thanks for running my program. :) Goodbye.")
 
 # get the names of every player
 def get_list_players():
