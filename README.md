@@ -1,4 +1,4 @@
-# Resistance-Avalon-CLI
+# The Resistance: Avalon (Command-Line Game Manager)
 
 **Supports 5 - 10 people**.  
 Supports both Mac and Windows. Linux untested.
