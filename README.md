@@ -7,11 +7,11 @@ Roles and Quests are handled discretely by clearing the command line after every
 Supports 5 - 10 people.
 
 Included roles:  
-* Modred
+* Mordred
 * Assassin
 * Morgana
 * Oberon
 * Minion of Mordred
 * Merlin
 * Percival
-* Good Guy
+* Good Guy (aka Servant of Arthur)
