@@ -29,5 +29,5 @@ Role assignments:
 Party Selection denoting Required Players on Party:  
 ![party_selection](imgs/Party_Selection.png)
 
-Voting Mechanics:
+Voting Mechanics:  
 ![voting](imgs/Round_Voting.png)
