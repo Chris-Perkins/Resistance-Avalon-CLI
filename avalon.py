@@ -74,8 +74,7 @@ def main():
 
 # get the names of every player
 def get_list_players():
-    print("Enter the names of the players separated by a space\n> ")
-    return [x.lower() for x in input().split()]    
+    return [x.lower() for x in input().split("Enter the names of the players separated by a space\n> ")]    
 
 # let the player chose what roles will be activated throughout the game
 def chose_possible_roles(player_count):
