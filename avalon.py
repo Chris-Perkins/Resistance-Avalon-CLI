@@ -178,7 +178,7 @@ def show_player_roles(list_players, dict_player_roles):
 def do_round(participants, cur_round):
     # 4th mission requires 2 fails if >= 4 participants on the 4th round
     # otherwise, we only require one fail.
-    required_fails = 1 if not (cur_round == 4 and len(participants) >= 4) else 2
+    required_fails = 1 if not (cur_round == 3 and len(participants) >= 4) else 2
     
     cur_fails = 0
     for participant in participants:
@@ -198,8 +198,6 @@ def do_round(participants, cur_round):
     # returns success if the number of fails submitted is less than the required fails
     input("The result of the past round was... (press enter to continue)")
     input(("PASS" if cur_fails < required_fails else "FAIL") + " with %d fails played" % cur_fails)
-    
-    print("Found %d fails")
     
     return cur_fails < required_fails
     
